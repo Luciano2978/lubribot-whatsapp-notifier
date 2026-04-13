@@ -1,0 +1,12 @@
+# Ignorar contraseñas
+.env
+
+# Ignorar sesiones y descargas
+sesion_whatsapp_nativa/
+descargas/
+
+# Ignorar bases de datos locales
+turnos_hoy.json
+
+# Ignorar archivos temporales de Python
+__pycache__/
