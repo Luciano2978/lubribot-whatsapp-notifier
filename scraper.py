@@ -1,22 +1,29 @@
 # scraper.py
-from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 import os
+from dotenv import load_dotenv
 
 # Cargamos las variables del archivo .env
 load_dotenv()
 
-# Ahora las traemos con os.getenv
 NOMBRE_DEL_GRUPO = os.getenv("WSP_GROUP_NAME")
 DIRECTORIO_SESION = "./sesion_whatsapp_nativa"
+
 def enviar_mensaje_wsp(mensaje):
     """Abre WhatsApp Web usando la sesión guardada y envía un mensaje al grupo."""
+    
+    # 👇 NUEVA LÓGICA: Detección automática del primer inicio
+    es_primera_vez = False
+    if not os.path.exists(DIRECTORIO_SESION) or len(os.listdir(DIRECTORIO_SESION)) == 0:
+        es_primera_vez = True
+        print("⚠️ Primera ejecución detectada: Se mostrará el navegador para escanear el QR.", flush=True)
+    
     os.makedirs(DIRECTORIO_SESION, exist_ok=True)
 
     with sync_playwright() as p:
         browser = p.chromium.launch_persistent_context(
             user_data_dir=DIRECTORIO_SESION,
-            headless=True, 
+            headless=not es_primera_vez, # 👈 Automático: False la primera vez, True el resto de los días
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         )
         page = browser.pages[0] 
@@ -25,6 +32,9 @@ def enviar_mensaje_wsp(mensaje):
         page.goto("https://web.whatsapp.com/")
         try:
             print("⏳ Esperando a que cargue WhatsApp...", flush=True)
+            if es_primera_vez:
+                print("📱 POR FAVOR, ESCANEÁ EL CÓDIGO QR CON TU CELULAR AHORA.", flush=True)
+                
             page.wait_for_selector('#pane-side', timeout=60000)
             print("✅ Sesión activa detectada.", flush=True)
             
