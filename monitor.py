@@ -6,6 +6,8 @@ import time
 import re
 from datetime import datetime
 import subprocess
+from dotenv import load_dotenv
+load_dotenv()  # 👈 esto lee el .env y carga las variables
 ARCHIVO_MEMORIA = "turnos_hoy.json"
 MINUTOS_ESPERA = 5
 
