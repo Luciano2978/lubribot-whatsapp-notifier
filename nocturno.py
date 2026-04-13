@@ -4,8 +4,8 @@ import pandas as pd
 import os
 from datetime import datetime, timedelta
 import re
-from scraper import enviar_mensaje_wsp # Importamos la función que manda el WhatsApp
 from dotenv import load_dotenv
+import subprocess
 
 load_dotenv()
 def extraer_datos_calendario():
@@ -122,6 +122,8 @@ if __name__ == "__main__":
         print("------------------------\n")
         
         # Llamamos a la función compartida del scraper.py
-        enviar_mensaje_wsp(mensaje_final)
+        with open("mensaje_temp.txt", "w", encoding="utf-8") as f:
+            f.write(mensaje_final.strip())
+        subprocess.run(["python", "scraper.py"])
     else:
         print("❌ Operación cancelada. No hay datos para procesar.")

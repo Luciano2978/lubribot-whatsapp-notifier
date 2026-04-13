@@ -5,8 +5,7 @@ import os
 import time
 import re
 from datetime import datetime
-from scraper import enviar_mensaje_wsp
-
+import subprocess
 ARCHIVO_MEMORIA = "turnos_hoy.json"
 MINUTOS_ESPERA = 5
 
@@ -130,7 +129,12 @@ def monitorear_turnos_nuevos():
             mensaje_final += f"\n📊 *Total de turnos para hoy:* {total_hoy}"
             
             print(f"\nCambios detectados. Total hoy: {total_hoy}. Enviando WhatsApp...")
-            enviar_mensaje_wsp(mensaje_final.strip())
+            # 👇 NUEVA LÓGICA CON AISLAMIENTO
+            with open("mensaje_temp.txt", "w", encoding="utf-8") as f:
+                f.write(mensaje_final.strip())
+            
+            # Ejecutamos el scraper como un programa totalmente independiente
+            subprocess.run(["python", "scraper.py"])
             guardar_memoria(turnos_actuales_dict)
         else:
             print("-> Sin novedades.")
