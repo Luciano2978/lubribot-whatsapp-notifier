@@ -124,6 +124,7 @@ if __name__ == "__main__":
         # Llamamos a la función compartida del scraper.py
         with open("mensaje_temp.txt", "w", encoding="utf-8") as f:
             f.write(mensaje_final.strip())
-        subprocess.run(["python", "scraper.py"])
+        # Reemplazá el subprocess.run por esta línea:
+        subprocess.run(["python", "scraper.py"], creationflags=subprocess.CREATE_NO_WINDOW)
     else:
         print("❌ Operación cancelada. No hay datos para procesar.")
