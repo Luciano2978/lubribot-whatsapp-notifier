@@ -137,7 +137,7 @@ def monitorear_turnos_nuevos():
             
             # Ejecutamos el scraper como un programa totalmente independiente
             # Reemplazá el subprocess.run por esta línea:
-            subprocess.run(["python", "scraper.py"], creationflags=subprocess.CREATE_NO_WINDOW)
+            subprocess.run["python", "scraper.py"]
             guardar_memoria(turnos_actuales_dict)
         else:
             print("-> Sin novedades.")

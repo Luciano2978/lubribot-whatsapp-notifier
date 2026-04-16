@@ -125,6 +125,6 @@ if __name__ == "__main__":
         with open("mensaje_temp.txt", "w", encoding="utf-8") as f:
             f.write(mensaje_final.strip())
         # Reemplazá el subprocess.run por esta línea:
-        subprocess.run(["python", "scraper.py"], creationflags=subprocess.CREATE_NO_WINDOW)
+        subprocess.run["python", "scraper.py"]
     else:
         print("❌ Operación cancelada. No hay datos para procesar.")
